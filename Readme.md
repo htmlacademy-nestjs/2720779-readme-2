@@ -1,7 +1,7 @@
 # Личный проект «Readme»
 
-* Студент: [Nikita Medvedev](https://up.htmlacademy.ru/nodejs-2-individual/2/user/2720779).
-* Наставник: `Неизвестно`.
+- Студент: [Nikita Medvedev](https://up.htmlacademy.ru/nodejs-2-individual/2/user/2720779).
+- Наставник: `Poklonskiy Vladislav`.
 
 ---
 
