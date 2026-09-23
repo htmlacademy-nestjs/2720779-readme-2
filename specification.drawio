@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Страница-1" id="nnuwWuHayxsOm_rcB6dW">
-    <mxGraphModel dx="2054" dy="1103" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="772" dy="1102" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -23,7 +23,7 @@
           <mxGeometry height="60" width="130" x="35" y="130" as="geometry" />
         </mxCell>
         <mxCell id="bRDfDSgDF8xkwCZHEXT6-6" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Blog" vertex="1">
-          <mxGeometry height="200" width="200" x="550" y="310" as="geometry" />
+          <mxGeometry height="200" width="200" x="550" y="320" as="geometry" />
         </mxCell>
         <mxCell id="bRDfDSgDF8xkwCZHEXT6-16" parent="bRDfDSgDF8xkwCZHEXT6-6" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.database;whiteSpace=wrap;" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;MongoDB" vertex="1">
           <mxGeometry height="60" width="130" x="35" y="130" as="geometry" />
