@@ -1,0 +1,43 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/users-e2e"
+    },
+    {
+      "path": "./apps/users"
+    },
+    {
+      "path": "./api-gateway-e2e"
+    },
+    {
+      "path": "./api-gateway"
+    },
+    {
+      "path": "./apps/api-gateway-e2e"
+    },
+    {
+      "path": "./apps/api-gateway"
+    },
+    {
+      "path": "./apps/blog-e2e"
+    },
+    {
+      "path": "./apps/blog"
+    },
+    {
+      "path": "./apps/notify-e2e"
+    },
+    {
+      "path": "./apps/notify"
+    },
+    {
+      "path": "./apps/files-e2e"
+    },
+    {
+      "path": "./apps/files"
+    }
+  ]
+}
