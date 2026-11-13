@@ -1,32 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import { LikeEntity } from './like.entity';
 
 @Injectable()
 export class LikeRepository {
-  private readonly likes = new Map<string, LikeEntity>();
+  constructor(private readonly prisma: PrismaService) {}
 
   public async save(entity: LikeEntity): Promise<LikeEntity> {
-    this.likes.set(entity.key, entity);
-    return entity;
+    const created = await this.prisma.like.create({
+      data: {
+        userId: entity.userId,
+        postId: entity.postId,
+        createDate: entity.createDate,
+      },
+    });
+    return LikeEntity.fromObject(created);
   }
 
   public async delete(userId: string, postId: string): Promise<boolean> {
-    return this.likes.delete(`${userId}|${postId}`);
+    try {
+      await this.prisma.like.delete({
+        where: { userId_postId: { userId, postId } },
+      });
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   public async exists(userId: string, postId: string): Promise<boolean> {
-    return this.likes.has(`${userId}|${postId}`);
+    const like = await this.prisma.like.findUnique({
+      where: { userId_postId: { userId, postId } },
+      select: { userId: true },
+    });
+    return like !== null;
   }
 
   public async countByPost(postId: string): Promise<number> {
-    return [...this.likes.values()].filter((l) => l.postId === postId).length;
+    return this.prisma.like.count({ where: { postId } });
   }
 
   public async deleteByPost(postId: string): Promise<void> {
-    for (const [key, like] of this.likes) {
-      if (like.postId === postId) {
-        this.likes.delete(key);
-      }
-    }
+    await this.prisma.like.deleteMany({ where: { postId } });
   }
 }

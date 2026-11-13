@@ -14,3 +14,4 @@ coverage
 **/.env
 
 data/
+project/apps/blog/src/generated/

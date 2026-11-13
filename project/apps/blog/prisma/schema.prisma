@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client"
+  output   =  "../src/generated/prisma"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post {
+  id               String    @id @default(uuid())
+  type             String
+  authorId         String
+  title            String?
+  tags             String[]
+  announcement     String?
+  text             String?
+  quoteText        String?
+  quoteAuthor      String?
+  videoUrl         String?
+  photoUrl         String?
+  linkUrl          String?
+  linkDescription  String?
+  publishDate      DateTime  @default(now())
+  createDate       DateTime  @default(now())
+  status           String    @default("published")
+  isRepost         Boolean   @default(false)
+  originalPostId   String?
+  originalAuthorId String?
+  comments         Comment[]
+  likes            Like[]
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  postId     String
+  userId     String
+  text       String
+  createDate DateTime @default(now())
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Like {
+  userId     String
+  postId     String
+  createDate DateTime @default(now())
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
+}

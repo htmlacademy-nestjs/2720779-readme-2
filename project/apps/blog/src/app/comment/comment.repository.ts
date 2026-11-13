@@ -1,21 +1,36 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import { CommentEntity } from './comment.entity';
 
 @Injectable()
 export class CommentRepository {
-  private readonly comments = new Map<string, CommentEntity>();
+  constructor(private readonly prisma: PrismaService) {}
 
   public async save(entity: CommentEntity): Promise<CommentEntity> {
-    this.comments.set(entity.id, entity);
-    return entity;
+    const created = await this.prisma.comment.create({
+      data: {
+        id: entity.id || undefined,
+        postId: entity.postId,
+        userId: entity.userId,
+        text: entity.text,
+        createDate: entity.createDate,
+      },
+    });
+    return this.toEntity(created);
   }
 
   public async findById(id: string): Promise<CommentEntity | null> {
-    return this.comments.get(id) ?? null;
+    const comment = await this.prisma.comment.findUnique({ where: { id } });
+    return comment ? this.toEntity(comment) : null;
   }
 
   public async delete(id: string): Promise<boolean> {
-    return this.comments.delete(id);
+    try {
+      await this.prisma.comment.delete({ where: { id } });
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   public async findByPost(
@@ -23,19 +38,36 @@ export class CommentRepository {
     page = 1,
     limit = 50,
   ): Promise<{ items: CommentEntity[]; total: number }> {
-    const filtered = [...this.comments.values()]
-      .filter((c) => c.postId === postId)
-      .sort((a, b) => b.createDate.getTime() - a.createDate.getTime());
-
-    const total = filtered.length;
-    const start = (page - 1) * limit;
-    const items = filtered.slice(start, start + limit);
-
-    return { items, total };
+    const where = { postId };
+    const [comments, total] = await Promise.all([
+      this.prisma.comment.findMany({
+        where,
+        orderBy: { createDate: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.comment.count({ where }),
+    ]);
+    return { items: comments.map((c) => this.toEntity(c)), total };
   }
 
   public async countByPost(postId: string): Promise<number> {
-    return [...this.comments.values()].filter((c) => c.postId === postId)
-      .length;
+    return this.prisma.comment.count({ where: { postId } });
+  }
+
+  private toEntity(comment: {
+    id: string;
+    postId: string;
+    userId: string;
+    text: string;
+    createDate: Date;
+  }): CommentEntity {
+    return CommentEntity.fromObject({
+      id: comment.id,
+      postId: comment.postId,
+      userId: comment.userId,
+      text: comment.text,
+      createDate: comment.createDate,
+    });
   }
 }

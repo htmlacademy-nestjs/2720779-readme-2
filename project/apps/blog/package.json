@@ -4,6 +4,51 @@
   "private": true,
   "nx": {
     "targets": {
+      "db-validate": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "prisma validate --schema=apps/blog/prisma/schema.prisma"
+          ],
+          "parallel": false
+        }
+      },
+      "db-generate": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "prisma generate --schema=apps/blog/prisma/schema.prisma"
+          ],
+          "parallel": false
+        }
+      },
+      "db-migrate": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "prisma migrate dev --schema=apps/blog/prisma/schema.prisma"
+          ],
+          "parallel": false
+        }
+      },
+      "db-reset": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "prisma migrate reset --schema=apps/blog/prisma/schema.prisma"
+          ],
+          "parallel": false
+        }
+      },
+      "db-fill": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "npx ts-node apps/blog/prisma/seed.ts"
+          ],
+          "parallel": false
+        }
+      },
       "prune-lockfile": {
         "dependsOn": [
           "build"

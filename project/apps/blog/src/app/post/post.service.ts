@@ -19,11 +19,9 @@ import { CommentRepository } from '../comment/comment.repository';
 @Injectable()
 export class PostService {
   constructor(
-    private readonly postRepository: PostRepository,
-    @Inject(forwardRef(() => LikeRepository))
-    private readonly likeRepository: LikeRepository,
-    @Inject(forwardRef(() => CommentRepository))
-    private readonly commentRepository: CommentRepository,
+   private readonly postRepository: PostRepository,
+  private readonly likeRepository: LikeRepository,
+  private readonly commentRepository: CommentRepository,
   ) {}
 
   public async create(dto: CreatePostDto): Promise<Post> {
@@ -82,7 +80,6 @@ export class PostService {
     const sort = query.sort ?? 'dateDesc';
     let sorted: PostEntity[];
 
-    // 2. Сортировка
     if (sort === 'likesDesc') {
       const enriched = await Promise.all(
         all.map(async (p) => ({

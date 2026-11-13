@@ -1,0 +1,93 @@
+@baseUrl = http://localhost:3001/api
+
+### Создать пост (text)
+POST {{baseUrl}}/posts
+Content-Type: application/json
+
+{
+  "type": "text",
+  "authorId": "seed-user-1",
+  "title": "Новый пост через Prisma",
+  "announcement": "Анонс нового поста, достаточно длинный для прохождения валидации",
+  "text": "Текст нового поста, достаточно длинный для прохождения валидации по минимальному порогу в сто символов",
+  "tags": ["nestjs", "prisma"]
+}
+
+### Список постов (по умолчанию, сортировка по дате)
+GET {{baseUrl}}/posts
+
+### Список постов — сортировка по лайкам
+GET {{baseUrl}}/posts?sort=likesDesc
+
+### Список постов — сортировка по комментариям
+GET {{baseUrl}}/posts?sort=commentsDesc
+
+### Список постов — фильтр по тегу
+GET {{baseUrl}}/posts?tag=nestjs
+
+### Список постов — фильтр по типу
+GET {{baseUrl}}/posts?type=text
+
+### Список постов — пагинация
+GET {{baseUrl}}/posts?page=1&limit=10
+
+### Детальная информация о посте
+GET {{baseUrl}}/posts/{{postId}}
+
+### Обновить пост
+PATCH {{baseUrl}}/posts/{{postId}}
+Content-Type: application/json
+
+{
+  "title": "Обновлённый заголовок поста через Prisma"
+}
+
+### Удалить пост
+DELETE {{baseUrl}}/posts/{{postId}}
+
+### Репост
+POST {{baseUrl}}/posts/{{postId}}/repost
+Content-Type: application/json
+
+{
+  "authorId": "seed-user-3"
+}
+
+### Создать комментарий
+POST {{baseUrl}}/posts/{{postId}}/comments
+Content-Type: application/json
+
+{
+  "userId": "seed-user-2",
+  "text": "Комментарий через Prisma, достаточно длинный"
+}
+
+### Список комментариев поста
+GET {{baseUrl}}/posts/{{postId}}/comments
+
+### Удалить комментарий
+DELETE {{baseUrl}}/comments/{{commentId}}
+Content-Type: application/json
+
+{
+  "userId": "seed-user-2"
+}
+
+### Поставить лайк
+POST {{baseUrl}}/posts/{{postId}}/like
+Content-Type: application/json
+
+{
+  "userId": "seed-user-3"
+}
+
+### Снять лайк
+DELETE {{baseUrl}}/posts/{{postId}}/like
+Content-Type: application/json
+
+{
+  "userId": "seed-user-3"
+}
+
+### Поиск по названию
+GET {{baseUrl}}/posts/search?title=первый

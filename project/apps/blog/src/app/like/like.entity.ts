@@ -26,4 +26,7 @@ export class LikeEntity implements Like {
   public get key(): string {
     return `${this.userId}|${this.postId}`;
   }
+    static fromObject(data: Like): LikeEntity {
+    return new LikeEntity(data);
+  }
 }
