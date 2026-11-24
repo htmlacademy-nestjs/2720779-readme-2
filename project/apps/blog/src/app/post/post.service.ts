@@ -72,7 +72,7 @@ export class PostService {
     });
 
     const sort = query.sort ?? PostSortField.DateDesc;
-    let sorted: PostEntity[];
+    let sortedPosts: PostEntity[];
 
     if (sort === PostSortField.LikesDesc) {
       const enrichedPosts = await Promise.all(
@@ -86,7 +86,7 @@ export class PostService {
           b.count - a.count ||
           b.entity.publishDate.getTime() - a.entity.publishDate.getTime(),
       );
-      sorted = enrichedPosts.map((e) => e.entity);
+      sortedPosts = enrichedPosts.map((e) => e.entity);
     } else if (PostSortField.CommentsDesc) {
       const enrichedPosts = await Promise.all(
         all.map(async (p) => ({
@@ -99,17 +99,17 @@ export class PostService {
           b.count - a.count ||
           b.entity.publishDate.getTime() - a.entity.publishDate.getTime(),
       );
-      sorted = enrichedPosts.map((e) => e.entity);
+      sortedPosts = enrichedPosts.map((e) => e.entity);
     } else {
-      sorted = [...all].sort(
+      sortedPosts = [...all].sort(
         (a, b) => b.publishDate.getTime() - a.publishDate.getTime(),
       );
     }
-    const total = sorted.length;
+    const total = sortedPosts.length;
     const page = query.page ?? 1;
     const limit = query.limit ?? POSTS_DEFAULT_LIMIT;
     const start = (page - 1) * limit;
-    const items = sorted.slice(start, start + limit).map((e) => e.toPOJO());
+    const items = sortedPosts.slice(start, start + limit).map((e) => e.toPOJO());
 
     return { items, total };
   }
